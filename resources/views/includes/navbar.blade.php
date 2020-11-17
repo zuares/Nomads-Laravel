@@ -28,14 +28,35 @@
                     <a href="#" class="nav-link">Testimonial</a>
                 </li>
             </ul>
+            @guest
             <!-- Mobile Button -->
-            <form class="form-inline mx-md-2 d-md-block d-lg-none">
-                <button class="btn btn-login  my-2 my-sm-0 px-4">Masuk</button>
+            <form class="form-inline mx-md-2 d-md-block d-lg-none" type="button"
+                onclick="event.preventDefault(); location.href='{{url('login')}}' ">
+                <button class="btn btn-login  my-2 my-sm-0 px-4">Login</button>
             </form>
             <!-- Dekstop button -->
-            <form class="form-inline my-2 my-lg-0 d-none d-lg-block">
-                <button class="btn btn-login mx-md-2 btn-navbar-right my-2 my-sm-0 px-4">Masuk</button>
+            <form class="form-inline my-2 my-lg-0 d-none d-lg-block" type="button"
+                onclick="event.preventDefault(); location.href='{{url('login')}}' ">
+                <button class="btn btn-login mx-md-2 btn-navbar-right my-2 my-sm-0 px-4">Login</button>
             </form>
+            @endguest
+
+            @auth
+            <!-- Mobile Button -->
+            <form method="POST" class="form-inline mx-md-2 d-md-block d-lg-none" action="{{url('logout')}}"
+                type="submit">
+                <button class="btn btn-login  my-2 my-sm-0 px-4">Logout</button>
+                @csrf
+            </form>
+            <!-- Dekstop button -->
+            <form method="POST" class="form-inline my-2 my-lg-0 d-none d-lg-block">
+                @csrf
+                <button class="btn btn-login mx-md-2 btn-navbar-right my-2 my-sm-0 px-4" action="{{url('logout')}}"
+                    type="submit">Logout</button>
+            </form>
+            @endauth
+
+
         </div>
     </nav>
 </div>

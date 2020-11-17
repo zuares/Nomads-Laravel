@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/detail', [DetailController::class, 'index'])->name('detail');
@@ -14,6 +15,9 @@ Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('c
 
 Route::prefix('admin')
     ->namespace('Admin')
+    ->middleware(['auth', 'admin'])
     ->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('Dashboard');
     });
+
+Auth::routes(['verify' => true]);
