@@ -30,11 +30,7 @@
                     <label for="title">Title</label>
                     <input type="text" class="form-control" name="title" placeholder="Title" value="{{old('title')}}">
                 </div>
-                <div class="form-group">
-                    <label for="location">Location</label>
-                    <input type="text" class="form-control" name="location" placeholder="location"
-                        value="{{old('title')}}">
-                </div>
+
                 <div class="form-group">
                     <label for="about">About</label>
                     <textarea name="about" rows="10" class="d-block w-100 form-control">
