@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\TravelPackageRequest as AdminTravelPackageRequest;
+use App\Http\Requests\Admin\GalleryRequest as AdminGalleryRequest;
+use App\Models\Gallery;
 use App\Models\TravelPackage;
 use Illuminate\Support\Str;
 
-
-class TravelPackageController extends Controller
+class GalleryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class TravelPackageController extends Controller
      */
     public function index()
     {
-        $items = TravelPackage::all();
-        return view('pages.admin.travel-package.index', [
+        $items = Gallery::with(['travel_package'])->get();
+        return view('pages.admin.gallery.index', [
             'items' => $items
         ]);
     }
@@ -31,7 +31,10 @@ class TravelPackageController extends Controller
     public function create()
     {
         //
-        return view('pages.admin.travel-package.create');
+        $travel_packages = TravelPackage::all();
+        return view('pages.admin.gallery.create', [
+            "travel_packages" => $travel_packages
+        ]);
     }
 
     /**
@@ -40,14 +43,14 @@ class TravelPackageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AdminTravelPackageRequest $request)
+    public function store(AdminGalleryRequest $request)
     {
         //
         $data = $request->all();
-        $data['slug'] = Str::slug($request->title);
+        $data['image'] = $request->file('image')->store('assets/gallery');
 
-        TravelPackage::create($data);
-        return redirect()->route('travel-package.index');
+        Gallery::create($data);
+        return redirect()->route('gallery.index');
     }
 
     /**
@@ -70,10 +73,12 @@ class TravelPackageController extends Controller
     public function edit($id)
     {
         //
-        $item = TravelPackage::findOrFail($id);
+        $travel_packages = TravelPackage::all();
+        $item = Gallery::findOrFail($id);
 
-        return view('pages.admin.travel-package.edit', [
-            'item' => $item
+        return view('pages.admin.gallery.edit', [
+            'item' => $item,
+            'travel_packages' => $travel_packages
         ]);
     }
 
@@ -84,15 +89,15 @@ class TravelPackageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(AdminTravelPackageRequest $request, $id)
+    public function update(AdminGalleryRequest $request, $id)
     {
         $data = $request->all();
-        $data['slug'] = Str::slug($request->title);
-        $item = TravelPackage::findOrFail($id);
+        $item = Gallery::findOrFail($id);
+        $data['image'] = $request->file('image')->store('assets/gallery');
 
         $item->update($data);
 
-        return redirect()->route('travel-package.index');
+        return redirect()->route('gallery.index');
     }
 
     /**
@@ -104,8 +109,8 @@ class TravelPackageController extends Controller
     public function destroy($id)
     {
         //
-        $item = TravelPackage::findOrFail($id);
+        $item = Gallery::findOrFail($id);
         $item->delete($item);
-        return redirect(route('travel-package.index'));
+        return redirect(route('gallery.index'));
     }
 }
