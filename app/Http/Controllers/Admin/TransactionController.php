@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TransactionRequest as AdminTransactionRequest;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 
@@ -15,13 +16,14 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $items = Transaction::with(['details', 'travel_package', 'user'])->get();
         return view('pages.admin.transaction.index', [
             'items' => $items
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
