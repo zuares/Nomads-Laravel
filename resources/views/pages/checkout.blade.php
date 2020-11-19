@@ -181,7 +181,7 @@
                             class="btn btn-block btn-join-now mt-3 py-2">I
                             Have a
                             Made
-                            Payment</a>
+                            Payments</a>
                     </div>
                     <div class="text-center mt-3">
                         <a href="{{route('detail', $item->travel_package->slug)}}" class="text-muted">Cancel Booking</a>
